@@ -44,7 +44,7 @@ const faqSchema = {
       "name": "Is my listing data stored or shared after geocoding?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. Address data is sent to the geocoding provider (Nominatim / OpenStreetMap) only for the purpose of resolving coordinates. Locator does not store your uploaded files or listing data on its servers. Results are cached temporarily to speed up repeat lookups but are not logged or shared.",
+        "text": "No. Address data is sent to the geocoding provider (Nominatim / OpenStreetMap) only for the purpose of resolving coordinates. GeoBatch does not store your uploaded files or listing data on its servers. Results are cached temporarily to speed up repeat lookups but are not logged or shared.",
       },
     },
   ],
@@ -65,7 +65,7 @@ const faqItems = [
   },
   {
     q: "Is my listing data stored or shared after geocoding?",
-    a: "No. Address data is sent to the geocoding provider (Nominatim / OpenStreetMap) only for the purpose of resolving coordinates. Locator does not store your uploaded files or listing data on its servers. Results are cached temporarily to speed up repeat lookups but are not logged or shared.",
+    a: "No. Address data is sent to the geocoding provider (Nominatim / OpenStreetMap) only for the purpose of resolving coordinates. GeoBatch does not store your uploaded files or listing data on its servers. Results are cached temporarily to speed up repeat lookups but are not logged or shared.",
   },
 ];
 
@@ -89,12 +89,10 @@ export default function Page() {
             Convert MLS Listing Addresses to Coordinates in Bulk
           </h1>
           <p className="text-lg text-muted-foreground">
-            Real estate professionals managing hundreds or thousands of property
-            listings need a reliable way to convert street addresses into map
-            coordinates. Whether you are building a property-search map,
-            calculating commute times, or feeding a CRM with location data,
-            bulk geocoding turns your MLS export into a geospatially-enriched
-            dataset in minutes.
+            Upload a CSV of MLS property listings and convert every street
+            address into precise lat/lng coordinates in minutes. The tool
+            recognizes common real-estate column headers — Address, Street, City,
+            PostalCode, County — and maps them automatically.
           </p>
           <p className="text-muted-foreground">
             The batch CSV tool understands common real-estate column naming
@@ -115,43 +113,27 @@ export default function Page() {
 
         <section className="space-y-4">
           <h2 className="text-2xl font-semibold tracking-tight">
-            How It Works
+            What does geocoded MLS listing data look like?
           </h2>
-          <div className="grid gap-6 sm:grid-cols-3">
+          <p className="text-sm text-muted-foreground">
+            Here is what a typical MLS export looks like before and after geocoding.
+          </p>
+          <div className="grid gap-6 sm:grid-cols-2">
             <div className="rounded-lg border border-border bg-card p-5">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
-                1
-              </span>
-              <h3 className="mt-3 font-medium">Export Listings from MLS</h3>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Export your property listings from any MLS platform as a CSV or
-                XLSX file. Include at minimum the street address, city, and
-                postal code. All other listing fields are preserved in the
-                output.
-              </p>
+              <h3 className="font-medium mb-2">Before: MLS Export</h3>
+              <pre className="text-xs overflow-x-auto">
+{`MLS#,Address,City,Price,Beds,Baths
+MLS001,123 Main St,Springfield,$450000,3,2
+MLS002,456 Oak Ave,Portland,$675000,4,3`}
+              </pre>
             </div>
             <div className="rounded-lg border border-border bg-card p-5">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
-                2
-              </span>
-              <h3 className="mt-3 font-medium">Upload and Map Columns</h3>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Drag the file onto the batch tool. Address columns are detected
-                automatically. Review the mapping, choose the MLS template from
-                presets if available, and toggle the Geocode option.
-              </p>
-            </div>
-            <div className="rounded-lg border border-border bg-card p-5">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
-                3
-              </span>
-              <h3 className="mt-3 font-medium">Download Geocoded Results</h3>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Get a CSV or XLSX back with latitude and longitude appended to
-                each listing. Choose Decimal Degrees for GIS import or DMS for
-                human-readable coordinates. All original MLS columns remain
-                intact.
-              </p>
+              <h3 className="font-medium mb-2">After: Geocoded Listings</h3>
+              <pre className="text-xs overflow-x-auto">
+{`MLS#,Address,City,Price,Beds,Baths,Latitude,Longitude
+MLS001,123 Main St,Springfield,$450000,3,2,39.7817,-89.6501
+MLS002,456 Oak Ave,Portland,$675000,4,3,45.5152,-122.6784`}
+              </pre>
             </div>
           </div>
         </section>
@@ -223,6 +205,10 @@ export default function Page() {
             .
           </p>
         </section>
+
+        <p className="mt-16 text-xs text-muted-foreground text-center">
+          Last updated: July 2026
+        </p>
       </div>
     </>
   );

@@ -20,7 +20,7 @@ const faqSchema = {
       "name": "What coordinate formats do drone surveys typically use?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Most drone flight logs export coordinates in Decimal Degrees (lat/lng) for GPS-based navigation. Survey-grade drones and photogrammetry software (Pix4D, DJI Terra, Agisoft) often use UTM or MGRS for local grid accuracy. Locator supports all three and can convert between them in batch.",
+        "text": "Most drone flight logs export coordinates in Decimal Degrees (lat/lng) for GPS-based navigation. Survey-grade drones and photogrammetry software (Pix4D, DJI Terra, Agisoft) often use UTM or MGRS for local grid accuracy. GeoBatch supports all three and can convert between them in batch.",
       },
     },
     {
@@ -53,7 +53,7 @@ const faqSchema = {
 const faqItems = [
   {
     q: "What coordinate formats do drone surveys typically use?",
-    a: "Most drone flight logs export coordinates in Decimal Degrees (lat/lng) for GPS-based navigation. Survey-grade drones and photogrammetry software (Pix4D, DJI Terra, Agisoft) often use UTM or MGRS for local grid accuracy. Locator supports all three and can convert between them in batch.",
+    a: "Most drone flight logs export coordinates in Decimal Degrees (lat/lng) for GPS-based navigation. Survey-grade drones and photogrammetry software (Pix4D, DJI Terra, Agisoft) often use UTM or MGRS for local grid accuracy. GeoBatch supports all three and can convert between them in batch.",
   },
   {
     q: "Can I upload a DJI flight log CSV directly?",
@@ -89,12 +89,11 @@ export default function Page() {
             Drone Flight Log & Survey Coordinate Converter (MGRS/UTM Batch)
           </h1>
           <p className="text-lg text-muted-foreground">
-            Drone surveyors routinely work across multiple coordinate systems.
-            Flight logs from DJI, Autel, and other platforms record GPS
-            positions in Decimal Degrees. Photogrammetry software like Pix4D and
-            Agisoft expects UTM. Government and military survey grids use MGRS.
-            Locator converts between all of these formats in batch, handling
-            thousands of waypoints at once.
+            Upload a CSV of drone waypoints from DJI, Autel, or Pix4D and
+            convert every coordinate between Decimal Degrees, UTM, and MGRS in a
+            single batch. The tool auto-detects which columns contain coordinates
+            and which format they are in, so mixed-format files are handled
+            without extra configuration.
           </p>
           <p className="text-muted-foreground">
             Instead of manually converting coordinates one by one — or writing
@@ -122,43 +121,42 @@ export default function Page() {
 
         <section className="space-y-4">
           <h2 className="text-2xl font-semibold tracking-tight">
-            How It Works
+            How do you convert drone survey coordinates between MGRS, UTM, and Decimal Degrees?
           </h2>
-          <div className="grid gap-6 sm:grid-cols-3">
-            <div className="rounded-lg border border-border bg-card p-5">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
-                1
-              </span>
-              <h3 className="mt-3 font-medium">Upload Flight Log or Survey Data</h3>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Export waypoints from your flight log (DJI CSV, Pix4D, etc.) or
-                survey spreadsheet. Upload the file to the batch tool. Columns
-                containing coordinates are highlighted and auto-mapped.
-              </p>
-            </div>
-            <div className="rounded-lg border border-border bg-card p-5">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
-                2
-              </span>
-              <h3 className="mt-3 font-medium">Select Output Format</h3>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Choose the target coordinate format — MGRS for survey grids, UTM
-                for local precision, or Decimal Degrees for interoperability.
-                The converter processes all rows in parallel chunks of 200.
-              </p>
-            </div>
-            <div className="rounded-lg border border-border bg-card p-5">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
-                3
-              </span>
-              <h3 className="mt-3 font-medium">Download Converted Data</h3>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Get your output as CSV or XLSX. Original columns are preserved
-                and converted coordinates are appended. The new columns are
-                labelled clearly so they can be imported directly into your
-                survey or GIS software.
-              </p>
-            </div>
+          <p className="text-sm text-muted-foreground">
+            Here are some example coordinate conversions that the batch tool can perform in a single pass.
+          </p>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr>
+                  <th className="border border-border px-4 py-2 text-left font-medium bg-muted">Original Format</th>
+                  <th className="border border-border px-4 py-2 text-left font-medium bg-muted">Original Value</th>
+                  <th className="border border-border px-4 py-2 text-left font-medium bg-muted">Converted To</th>
+                  <th className="border border-border px-4 py-2 text-left font-medium bg-muted">Result</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="border border-border px-4 py-2">Decimal Degrees</td>
+                  <td className="border border-border px-4 py-2">28.7041, 77.1025</td>
+                  <td className="border border-border px-4 py-2">MGRS</td>
+                  <td className="border border-border px-4 py-2">43Q 5 19160 317468</td>
+                </tr>
+                <tr>
+                  <td className="border border-border px-4 py-2">UTM</td>
+                  <td className="border border-border px-4 py-2">43Q 420000 3175000</td>
+                  <td className="border border-border px-4 py-2">Decimal Degrees</td>
+                  <td className="border border-border px-4 py-2">28.7041, 77.1025</td>
+                </tr>
+                <tr>
+                  <td className="border border-border px-4 py-2">DMS</td>
+                  <td className="border border-border px-4 py-2">28°42'15"N, 77°06'09"E</td>
+                  <td className="border border-border px-4 py-2">Decimal Degrees</td>
+                  <td className="border border-border px-4 py-2">28.7042, 77.1025</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </section>
 
@@ -228,6 +226,10 @@ export default function Page() {
             .
           </p>
         </section>
+
+        <p className="mt-16 text-xs text-muted-foreground text-center">
+          Last updated: July 2026
+        </p>
       </div>
     </>
   );

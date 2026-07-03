@@ -52,7 +52,10 @@ export default function ApiDocsPage() {
           <Link href="/geocoding-api-for-csv" className="underline underline-offset-2 hover:text-foreground">CSV geocoding API</Link>
         </p>
       </div>
-    </div>
+      <p className="mt-16 text-xs text-muted-foreground text-center">
+        Last updated: July 2026
+      </p>
+      </div>
     </>
   );
 }

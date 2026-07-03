@@ -36,7 +36,7 @@ const faqSchema = {
       "name": "Is my location data stored or shared?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. Location data is processed entirely in your browser and during the server-side IP lookup. No coordinates or IP addresses are logged or stored by Locator. The IP geocoding result is cached briefly for performance but is not persisted or shared with third parties.",
+        "text": "No. Location data is processed entirely in your browser and during the server-side IP lookup. No coordinates or IP addresses are logged or stored by GeoBatch. The IP geocoding result is cached briefly for performance but is not persisted or shared with third parties.",
       },
     },
     {
@@ -61,7 +61,7 @@ const faqItems = [
   },
   {
     q: "Is my location data stored or shared?",
-    a: "No. Location data is processed entirely in your browser and during the server-side IP lookup. No coordinates or IP addresses are logged or stored by Locator. The IP geocoding result is cached briefly for performance but is not persisted or shared with third parties.",
+    a: "No. Location data is processed entirely in your browser and during the server-side IP lookup. No coordinates or IP addresses are logged or stored by GeoBatch. The IP geocoding result is cached briefly for performance but is not persisted or shared with third parties.",
   },
   {
     q: "Why does my browser ask for permission to access location?",
@@ -90,7 +90,7 @@ export default function Page() {
           </h1>
           <p className="text-lg text-muted-foreground">
             Need to know your current coordinates, address, or place on a map?
-            Open Locator&apos;s location tool and within seconds you&apos;ll see your
+            Open GeoBatch&apos;s location tool and within seconds you&apos;ll see your
             latitude and longitude, a reverse-geocoded address, and an
             interactive map centred on your position. Two data sources — GPS and
             IP — work together to give you the best possible result.
@@ -114,42 +114,16 @@ export default function Page() {
 
         <section className="space-y-4">
           <h2 className="text-2xl font-semibold tracking-tight">
-            How It Works
+            What information will I see when I check my location?
           </h2>
-          <div className="grid gap-6 sm:grid-cols-3">
-            <div className="rounded-lg border border-border bg-card p-5">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
-                1
-              </span>
-              <h3 className="mt-3 font-medium">Open the Tool</h3>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Navigate to the My Location page. Your browser may ask for
-                permission to access your location — click Allow for the most
-                accurate result.
-              </p>
-            </div>
-            <div className="rounded-lg border border-border bg-card p-5">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
-                2
-              </span>
-              <h3 className="mt-3 font-medium">View Your Coordinates</h3>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Your latitude and longitude are displayed in Decimal Degrees
-                along with a reverse-geocoded address. A map shows your position
-                with a draggable marker for fine-tuning.
-              </p>
-            </div>
-            <div className="rounded-lg border border-border bg-card p-5">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
-                3
-              </span>
-              <h3 className="mt-3 font-medium">Share or Use the Coordinates</h3>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Copy the coordinates to your clipboard, share the page link, or
-                use them directly in the coordinate converter or nearest-pump
-                finder.
-              </p>
-            </div>
+          <p className="text-sm text-muted-foreground">
+            When you open the location tool, here is the kind of result you will see — either from GPS or IP geolocation.
+          </p>
+          <div className="rounded-lg border border-border bg-card p-5 font-mono text-sm space-y-1">
+            <p>Latitude:  28.6139° N</p>
+            <p>Longitude: 77.2090° E</p>
+            <p>Accuracy:  ±15 metres (GPS)</p>
+            <p>Address:   New Delhi, Delhi, India</p>
           </div>
         </section>
 
@@ -202,6 +176,10 @@ export default function Page() {
             </Link>
           </div>
         </section>
+
+        <p className="mt-16 text-xs text-muted-foreground text-center">
+          Last updated: July 2026
+        </p>
       </div>
     </>
   );

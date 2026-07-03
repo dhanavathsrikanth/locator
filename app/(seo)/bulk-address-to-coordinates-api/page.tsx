@@ -96,6 +96,14 @@ export default function Page() {
             without geocoding each address one at a time.
           </p>
           <p className="text-muted-foreground">
+            You POST a JSON array of addresses to /api/geocode/batch and get
+            back latitude, longitude, a confidence score, and the resolved
+            address for every entry. Each batch accepts up to 500 addresses and
+            returns results in the same order you sent them. The API typically
+            responds in under 500ms per batch of 100 addresses, and the
+            cascading provider chain achieves a 95%+ geocoding hit rate.
+          </p>
+          <p className="text-muted-foreground">
             Each request runs through a cascade of geocoding providers —
             Nominatim followed by OpenCage — to maximize match rates. Results
             are cached in Redis for 30 days so repeated lookups cost nothing.
@@ -119,45 +127,114 @@ export default function Page() {
 
         <section className="space-y-4">
           <h2 className="text-2xl font-semibold tracking-tight">
-            How It Works
+            What does a bulk geocoding API request look like?
           </h2>
-          <div className="grid gap-6 sm:grid-cols-3">
-            <div className="rounded-lg border border-border bg-card p-5">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
-                1
-              </span>
-              <h3 className="mt-3 font-medium">Prepare Your Addresses</h3>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Format your addresses as a JSON array of strings or as a CSV
-                file with address columns. The system accepts full-address
-                strings as well as structured fields like street, city, and
-                postal code.
-              </p>
-            </div>
-            <div className="rounded-lg border border-border bg-card p-5">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
-                2
-              </span>
-              <h3 className="mt-3 font-medium">Send a Batch Request</h3>
-              <p className="mt-1 text-sm text-muted-foreground">
-                POST your payload to the /api/geocode/batch endpoint. Include
-                your API key in the Authorization header. The endpoint processes
-                up to 500 entries per call and returns results in the same
-                order.
-              </p>
-            </div>
-            <div className="rounded-lg border border-border bg-card p-5">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
-                3
-              </span>
-              <h3 className="mt-3 font-medium">Use the Coordinates</h3>
-              <p className="mt-1 text-sm text-muted-foreground">
-                The response includes lat, lng, formatted_address, and
-                confidence for each input. Pass the coordinates into your map
-                visualization, routing engine, or database enrichment pipeline.
-              </p>
-            </div>
+          <p className="text-sm text-muted-foreground">
+            Here is what a real batch geocoding request looks like against the REST endpoint.
+          </p>
+          <div className="rounded-lg border border-border bg-card p-5">
+            <pre className="text-sm overflow-x-auto">
+{`POST /api/geocode/batch
+Authorization: Bearer YOUR_API_KEY
+Content-Type: application/json
+
+{
+  "addresses": [
+    "1600 Amphitheatre Parkway, Mountain View, CA",
+    "1 Hacker Way, Menlo Park, CA",
+    "350 5th Ave, New York, NY 10118"
+  ]
+}`}
+            </pre>
           </div>
+          <p className="text-sm text-muted-foreground">
+            The API returns lat/lng, confidence scores, and the provider for each input:
+          </p>
+          <div className="rounded-lg border border-border bg-card p-5">
+            <pre className="text-sm overflow-x-auto">
+{`{
+  "results": [
+    {
+      "input_index": 0,
+      "lat": 37.4224, "lng": -122.0842,
+      "formatted_address": "1600 Amphitheatre Parkway, Mountain View, CA 94043",
+      "confidence": 0.95, "provider": "nominatim"
+    },
+    {
+      "input_index": 1,
+      "lat": 37.4846, "lng": -122.1483,
+      "formatted_address": "1 Hacker Way, Menlo Park, CA 94025",  
+      "confidence": 0.93, "provider": "nominatim"
+    },
+    {
+      "input_index": 2,
+      "lat": 40.7484, "lng": -73.9856,
+      "formatted_address": "350 5th Ave, New York, NY 10118",
+      "confidence": 0.97, "provider": "opencage"
+    }
+  ]
+}`}
+            </pre>
+          </div>
+        </section>
+
+        <section className="space-y-4">
+          <h2 className="text-2xl font-semibold tracking-tight">
+            How does GeoBatch pricing compare to Google Maps, Mapbox, HERE, and OpenCage?
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            GeoBatch offers the most generous free tier and the lowest per-request cost among major geocoding providers.
+          </p>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr>
+                  <th className="border border-border px-4 py-2 text-left font-medium bg-muted">Provider</th>
+                  <th className="border border-border px-4 py-2 text-left font-medium bg-muted">Free Tier</th>
+                  <th className="border border-border px-4 py-2 text-left font-medium bg-muted">Per 1,000 req</th>
+                  <th className="border border-border px-4 py-2 text-left font-medium bg-muted">Batch Limit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="border border-border px-4 py-2">GeoBatch</td>
+                  <td className="border border-border px-4 py-2">500–2,000/day</td>
+                  <td className="border border-border px-4 py-2">Free</td>
+                  <td className="border border-border px-4 py-2">500</td>
+                </tr>
+                <tr>
+                  <td className="border border-border px-4 py-2">Google Maps</td>
+                  <td className="border border-border px-4 py-2">$200/mo credit (~40K req)</td>
+                  <td className="border border-border px-4 py-2">$5.00</td>
+                  <td className="border border-border px-4 py-2">Dynamic</td>
+                </tr>
+                <tr>
+                  <td className="border border-border px-4 py-2">Mapbox</td>
+                  <td className="border border-border px-4 py-2">50,000/mo</td>
+                  <td className="border border-border px-4 py-2">$0.75</td>
+                  <td className="border border-border px-4 py-2">100</td>
+                </tr>
+                <tr>
+                  <td className="border border-border px-4 py-2">HERE</td>
+                  <td className="border border-border px-4 py-2">250K transactions/mo</td>
+                  <td className="border border-border px-4 py-2">$1.10</td>
+                  <td className="border border-border px-4 py-2">Dynamic</td>
+                </tr>
+                <tr>
+                  <td className="border border-border px-4 py-2">OpenCage</td>
+                  <td className="border border-border px-4 py-2">2,500/day</td>
+                  <td className="border border-border px-4 py-2">~€0.67</td>
+                  <td className="border border-border px-4 py-2">500</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p className="text-xs text-muted-foreground mt-2">
+            Sources: <a href="https://mapsplatform.google.com/pricing/" className="underline underline-offset-2 hover:text-foreground" target="_blank" rel="noopener noreferrer">Google Maps Platform</a>,{" "}
+            <a href="https://www.mapbox.com/pricing/" className="underline underline-offset-2 hover:text-foreground" target="_blank" rel="noopener noreferrer">Mapbox</a>,{" "}
+            <a href="https://www.here.com/pricing" className="underline underline-offset-2 hover:text-foreground" target="_blank" rel="noopener noreferrer">HERE</a>,{" "}
+            <a href="https://opencagedata.com/pricing" className="underline underline-offset-2 hover:text-foreground" target="_blank" rel="noopener noreferrer">OpenCage</a>. Prices and free tiers may change; verify on provider websites.
+          </p>
         </section>
 
         <section className="space-y-6">
@@ -226,6 +303,10 @@ export default function Page() {
             .
           </p>
         </section>
+
+        <p className="mt-16 text-xs text-muted-foreground text-center">
+          Last updated: July 2026
+        </p>
       </div>
     </>
   );

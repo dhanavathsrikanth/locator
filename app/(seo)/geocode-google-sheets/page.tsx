@@ -20,7 +20,7 @@ const faqSchema = {
       "name": "Do I need to install a Google Sheets add-on?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. Locator works directly with standard CSV exports from Google Sheets. There is no add-on to install. Export your sheet as CSV (File > Download > Comma-separated values), upload to the batch tool, and import the results back. For automated workflows, the API can be called from Google Apps Script using the UrlFetch service.",
+        "text": "No. GeoBatch works directly with standard CSV exports from Google Sheets. There is no add-on to install. Export your sheet as CSV (File > Download > Comma-separated values), upload to the batch tool, and import the results back. For automated workflows, the API can be called from Google Apps Script using the UrlFetch service.",
       },
     },
     {
@@ -28,7 +28,7 @@ const faqSchema = {
       "name": "How do I import the geocoded results back into Google Sheets?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "After geocoding, download the result CSV from Locator. In Google Sheets, go to File > Import > Upload and select the file. Choose either 'Replace current sheet' or 'Insert new sheet'. The lat/lng columns will appear alongside your original data, preserving all existing rows and cell formatting.",
+        "text": "After geocoding, download the result CSV from GeoBatch. In Google Sheets, go to File > Import > Upload and select the file. Choose either 'Replace current sheet' or 'Insert new sheet'. The lat/lng columns will appear alongside your original data, preserving all existing rows and cell formatting.",
       },
     },
     {
@@ -53,11 +53,11 @@ const faqSchema = {
 const faqItems = [
   {
     q: "Do I need to install a Google Sheets add-on?",
-    a: "No. Locator works directly with standard CSV exports from Google Sheets. There is no add-on to install. Export your sheet as CSV (File > Download > Comma-separated values), upload to the batch tool, and import the results back. For automated workflows, the API can be called from Google Apps Script using the UrlFetch service.",
+    a: "No. GeoBatch works directly with standard CSV exports from Google Sheets. There is no add-on to install. Export your sheet as CSV (File > Download > Comma-separated values), upload to the batch tool, and import the results back. For automated workflows, the API can be called from Google Apps Script using the UrlFetch service.",
   },
   {
     q: "How do I import the geocoded results back into Google Sheets?",
-    a: "After geocoding, download the result CSV from Locator. In Google Sheets, go to File > Import > Upload and select the file. Choose either 'Replace current sheet' or 'Insert new sheet'. The lat/lng columns will appear alongside your original data, preserving all existing rows and cell formatting.",
+    a: "After geocoding, download the result CSV from GeoBatch. In Google Sheets, go to File > Import > Upload and select the file. Choose either 'Replace current sheet' or 'Insert new sheet'. The lat/lng columns will appear alongside your original data, preserving all existing rows and cell formatting.",
   },
   {
     q: "Can I geocode addresses from Google Sheets using the REST API?",
@@ -91,18 +91,17 @@ export default function Page() {
           <p className="text-lg text-muted-foreground">
             If you manage address data in Google Sheets — customer lists,
             delivery zones, property records, or event venues — you already have
-            a spreadsheet full of text that needs coordinates. Locator lets you
+            a spreadsheet full of text that needs coordinates. GeoBatch lets you
             geocode those addresses without installing a Sheets extension or
             writing a script. Export, upload, convert, and import the results
             back in under five minutes.
           </p>
           <p className="text-muted-foreground">
-            The workflow is intentionally simple: Google Sheets exports to CSV
-            natively, and Locator&apos;s batch tool accepts CSV directly. No format
-            conversion, no API keys needed for a quick one-off job. For
-            recurring geocoding — weekly address refreshes, daily lead
-            imports — the REST API can be wired into Google Apps Script for full
-            automation.
+            Export your Google Sheet as CSV (File &gt; Download &gt; Comma-separated
+            values), upload it to GeoBatch&apos;s batch tool, and download the result
+            with lat/lng coordinates appended to every row. Then import the CSV
+            back into Google Sheets — no plugins, no scripts, no API keys needed
+            for a one-off job.
           </p>
           <div className="flex gap-3 pt-2">
             <Link
@@ -122,7 +121,7 @@ export default function Page() {
 
         <section className="space-y-4">
           <h2 className="text-2xl font-semibold tracking-tight">
-            How It Works
+            How do you geocode addresses from Google Sheets?
           </h2>
           <div className="grid gap-6 sm:grid-cols-3">
             <div className="rounded-lg border border-border bg-card p-5">
@@ -143,7 +142,7 @@ export default function Page() {
               </span>
               <h3 className="mt-3 font-medium">Upload and Geocode</h3>
               <p className="mt-1 text-sm text-muted-foreground">
-                Drag the CSV onto Locator&apos;s batch tool. Address columns are
+                Drag the CSV onto GeoBatch&apos;s batch tool. Address columns are
                 auto-detected. Toggle the Geocode option and click Convert. A
                 progress bar tracks every row as it is resolved through the
                 cascading geocoding pipeline.
@@ -161,6 +160,30 @@ export default function Page() {
                 coordinates alongside them.
               </p>
             </div>
+          </div>
+        </section>
+
+        <section className="space-y-4">
+          <h2 className="text-2xl font-semibold tracking-tight">
+            What does a geocoded Google Sheets export look like?
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            Here is what a geocoded sheet looks like before and after processing:
+          </p>
+          <div className="rounded-lg border border-border bg-card p-5">
+            <pre className="text-xs overflow-x-auto">
+{`Name,Address,City,Zip
+John Doe,123 Main St,Austin,78701`}
+            </pre>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            After geocoding, lat/lng columns are automatically appended:
+          </p>
+          <div className="rounded-lg border border-border bg-card p-5">
+            <pre className="text-xs overflow-x-auto">
+{`Name,Address,City,Zip,Latitude,Longitude
+John Doe,123 Main St,Austin,78701,30.2672,-97.7431`}
+            </pre>
           </div>
         </section>
 
@@ -230,6 +253,10 @@ export default function Page() {
             .
           </p>
         </section>
+
+        <p className="mt-16 text-xs text-muted-foreground text-center">
+          Last updated: July 2026
+        </p>
       </div>
     </>
   );

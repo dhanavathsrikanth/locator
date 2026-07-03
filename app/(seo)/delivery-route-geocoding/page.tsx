@@ -89,11 +89,11 @@ export default function Page() {
             Bulk Geocode Delivery Routes from CSV
           </h1>
           <p className="text-lg text-muted-foreground">
-            Every delivery route starts with addresses. Converting those
-            addresses into precise GPS coordinates unlocks route optimisation,
-            real-time driver tracking, and accurate ETA calculations. Locator&apos;s
-            batch geocoding tool takes a CSV of delivery stop addresses and
-            returns lat/lng coordinates for every stop — no coding required.
+            Upload a CSV of delivery stop addresses and get back lat/lng
+            coordinates for every stop, ready for route optimisation in Google
+            Maps, Mapbox, or any navigation platform. No coding required — just
+            export from your dispatch system, upload, and download the geocoded
+            results.
           </p>
           <p className="text-muted-foreground">
             Logistics teams typically export stops from a dispatch system as a
@@ -115,44 +115,27 @@ export default function Page() {
 
         <section className="space-y-4">
           <h2 className="text-2xl font-semibold tracking-tight">
-            How It Works
+            What does a geocoded delivery route CSV look like?
           </h2>
-          <div className="grid gap-6 sm:grid-cols-3">
+          <p className="text-sm text-muted-foreground">
+            Here is what a delivery route file looks like before and after geocoding with the batch tool.
+          </p>
+          <div className="grid gap-6 sm:grid-cols-2">
             <div className="rounded-lg border border-border bg-card p-5">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
-                1
-              </span>
-              <h3 className="mt-3 font-medium">Export Your Route CSV</h3>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Export delivery stops from your dispatch system as a CSV. Common
-                columns like Address, City, State, and Zip are detected
-                automatically. The delivery template preset maps these fields
-                instantly.
-              </p>
+              <h3 className="font-medium mb-2">Before: Route CSV</h3>
+              <pre className="text-xs overflow-x-auto">
+{`StopID,Address,City,Zip,TimeWindow
+S001,123 Main St,Springfield,IL,09:00-10:00
+S002,456 Oak Ave,Portland,OR,10:30-11:30`}
+              </pre>
             </div>
             <div className="rounded-lg border border-border bg-card p-5">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
-                2
-              </span>
-              <h3 className="mt-3 font-medium">Geocode with One Click</h3>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Upload the file, toggle the Geocode option, and start
-                processing. Each stop address is resolved through Nominatim with
-                automatic fallback to OpenCage. A progress bar tracks the batch
-                in real time.
-              </p>
-            </div>
-            <div className="rounded-lg border border-border bg-card p-5">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
-                3
-              </span>
-              <h3 className="mt-3 font-medium">Export for Navigation</h3>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Download the geocoded CSV with lat/lng columns appended. Import
-                directly into Google Maps, Mapbox, or your routing engine. All
-                original stop data — order numbers, customer names, time windows
-                — is preserved.
-              </p>
+              <h3 className="font-medium mb-2">After: Geocoded Route</h3>
+              <pre className="text-xs overflow-x-auto">
+{`StopID,Address,City,Zip,TimeWindow,Latitude,Longitude
+S001,123 Main St,Springfield,IL,09:00-10:00,39.7817,-89.6501
+S002,456 Oak Ave,Portland,OR,10:30-11:30,45.5152,-122.6784`}
+              </pre>
             </div>
           </div>
         </section>
@@ -223,6 +206,10 @@ export default function Page() {
             .
           </p>
         </section>
+
+        <p className="mt-16 text-xs text-muted-foreground text-center">
+          Last updated: July 2026
+        </p>
       </div>
     </>
   );
