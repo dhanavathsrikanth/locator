@@ -6,6 +6,7 @@ export function generateMetadata(): Metadata {
     title: "Bulk Address to Coordinates API — Locator",
     description:
       "Convert hundreds of street addresses to lat/lng in a single API call. Batch geocoding endpoint returns DD, DMS, UTM, or MGRS. Free to start, no credit card.",
+    alternates: { canonical: "/bulk-address-to-coordinates-api" },
   };
 }
 

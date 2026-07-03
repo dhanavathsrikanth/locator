@@ -6,6 +6,7 @@ export function generateMetadata(): Metadata {
     title: "Bulk Geocode Delivery Routes from CSV — Locator",
     description:
       "Upload a CSV of delivery stop addresses and geocode them in bulk for route optimisation. Export coordinates for Google Maps, Mapbox, or any navigation platform.",
+    alternates: { canonical: "/delivery-route-geocoding" },
   };
 }
 

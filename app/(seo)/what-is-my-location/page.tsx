@@ -6,6 +6,7 @@ export function generateMetadata(): Metadata {
     title: "What Is My Location? Instant IP + GPS Lookup — Locator",
     description:
       "Find your current location instantly using IP geolocation and browser GPS. Get lat/lng coordinates, address, and a shareable map link. No signup required.",
+    alternates: { canonical: "/what-is-my-location" },
   };
 }
 

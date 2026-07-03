@@ -6,6 +6,7 @@ export function generateMetadata(): Metadata {
     title: "Drone Flight Log & Survey Coordinate Converter (MGRS/UTM Batch) — Locator",
     description:
       "Convert drone survey coordinates between MGRS, UTM, and Decimal Degrees in batch. Upload flight logs, choose output format, and download clean coordinate data.",
+    alternates: { canonical: "/drone-survey-coordinate-converter" },
   };
 }
 

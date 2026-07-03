@@ -54,6 +54,29 @@ export default function Home() {
           </div>
         </div>
 
+        <div className="w-full max-w-5xl px-5">
+          <h2 className="text-xl font-semibold mb-4">Resources</h2>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              { href: "/geocoding-api-for-csv", label: "Geocoding API for CSV" },
+              { href: "/bulk-address-to-coordinates-api", label: "Bulk Address to Coordinates API" },
+              { href: "/real-estate-bulk-geocoding", label: "MLS Bulk Geocoding" },
+              { href: "/delivery-route-geocoding", label: "Delivery Route Geocoding" },
+              { href: "/drone-survey-coordinate-converter", label: "Drone Survey Converter" },
+              { href: "/what-is-my-location", label: "What Is My Location?" },
+              { href: "/geocode-google-sheets", label: "Geocode Google Sheets" },
+            ].map((r) => (
+              <Link
+                key={r.href}
+                href={r.href}
+                className="rounded-lg border border-border bg-card px-4 py-3 text-sm hover:border-primary/50 transition-colors"
+              >
+                {r.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+
         <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-16">
           <p className="text-muted-foreground">Locator</p>
           <ThemeSwitcher />

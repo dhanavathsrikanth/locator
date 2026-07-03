@@ -12,6 +12,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
   title: "Locator — Geospatial Developer Tool",
   description: "Convert, batch, and manage geospatial coordinate data",
+  alternates: { canonical: "/" },
 };
 
 const geistSans = Geist({

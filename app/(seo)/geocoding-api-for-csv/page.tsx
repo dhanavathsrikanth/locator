@@ -6,6 +6,7 @@ export function generateMetadata(): Metadata {
     title: "Geocoding API for CSV Upload — Locator",
     description:
       "Upload a CSV of addresses and geocode them in bulk. Free API for converting street addresses to lat/lng coordinates with auto-detect of address columns.",
+    alternates: { canonical: "/geocoding-api-for-csv" },
   };
 }
 

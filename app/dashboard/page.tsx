@@ -8,6 +8,7 @@ import { CodeSnippets } from "./code-snippets";
 
 export const metadata = {
   title: "Dashboard — Locator",
+  alternates: { canonical: "/dashboard" },
 };
 
 function startOfMonth() {

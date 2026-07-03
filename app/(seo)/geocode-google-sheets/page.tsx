@@ -6,6 +6,7 @@ export function generateMetadata(): Metadata {
     title: "Geocode Addresses Directly in Google Sheets — Locator",
     description:
       "Geocode addresses from Google Sheets in bulk. Export your sheet as CSV, upload to the batch geocoding tool, and import lat/lng coordinates back. Free, no plugin required.",
+    alternates: { canonical: "/geocode-google-sheets" },
   };
 }
 

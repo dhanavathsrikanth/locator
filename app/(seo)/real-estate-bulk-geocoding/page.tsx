@@ -6,6 +6,7 @@ export function generateMetadata(): Metadata {
     title: "Convert MLS Listing Addresses to Coordinates in Bulk — Locator",
     description:
       "Geocode thousands of MLS property addresses to lat/lng for real estate mapping. Upload a CSV of listings, auto-map MLS fields, and download coordinates in DD, DMS, or UTM.",
+    alternates: { canonical: "/real-estate-bulk-geocoding" },
   };
 }
 
