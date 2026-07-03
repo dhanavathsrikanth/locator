@@ -42,7 +42,8 @@ const BRAND_KEYWORDS: [string, string][] = [
 ];
 
 function detectBrand(tags: Record<string, string>): string {
-  const raw = (tags.brand || tags.operator || tags["brand:en"] || "").toLowerCase();
+  const rawOriginal = tags.brand || tags.operator || tags["brand:en"] || "";
+  const raw = rawOriginal.toLowerCase();
   for (const [keyword, brand] of BRAND_KEYWORDS) {
     if (raw.includes(keyword)) return brand;
   }
@@ -50,7 +51,7 @@ function detectBrand(tags: Record<string, string>): string {
   for (const [keyword, brand] of BRAND_KEYWORDS) {
     if (name.includes(keyword)) return brand;
   }
-  if (raw) return raw.charAt(0).toUpperCase() + raw.slice(1);
+  if (rawOriginal) return rawOriginal;
   return "Unbranded";
 }
 
