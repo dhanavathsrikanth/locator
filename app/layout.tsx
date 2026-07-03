@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { AuthProvider } from "@/components/auth-provider";
+import { Sidebar } from "@/components/sidebar";
 import "./globals.css";
 
 const defaultUrl = process.env.VERCEL_URL
@@ -52,7 +53,12 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <AuthProvider>
-            {children}
+            <div className="flex min-h-screen">
+              <Sidebar />
+              <main className="flex-1 min-w-0 lg:ml-64">
+                {children}
+              </main>
+            </div>
             <script
               type="application/ld+json"
               dangerouslySetInnerHTML={{

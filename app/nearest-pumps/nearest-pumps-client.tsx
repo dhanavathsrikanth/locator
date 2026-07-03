@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
-import { Loader2, Fuel } from "lucide-react";
+import { Loader2, Fuel, Navigation, MapPin, Radius, SlidersHorizontal } from "lucide-react";
 
 interface PetrolPump {
   id: number;
@@ -179,21 +179,26 @@ export default function NearestPumpsClient() {
     filteredPumps.forEach((pump) => {
       const color = BRAND_COLORS[pump.brand] || DEFAULT_COLOR;
       const el = document.createElement("div");
-      el.style.width = "22px";
-      el.style.height = "22px";
+      el.style.width = "24px";
+      el.style.height = "24px";
       el.style.background = color;
       el.style.borderRadius = "50%";
-      el.style.border = "2px solid white";
+      el.style.border = "3px solid white";
       el.style.cursor = "pointer";
-      el.style.boxShadow = "0 1px 3px rgba(0,0,0,0.3)";
+      el.style.boxShadow = "0 2px 6px rgba(0,0,0,0.25)";
+      el.style.transition = "transform 0.15s";
       el.title = `${pump.name} (${pump.distance} km)`;
 
-      const popup = new maplibregl.Popup({ offset: 25 }).setHTML(`
-        <div style="font-size:13px;line-height:1.4">
-          <strong>${pump.name}</strong><br/>
-          <span style="color:${color}">●</span> ${pump.brand}<br/>
-          <em>${pump.distance} km away</em>
-          ${pump.address ? `<br/>${pump.address}` : ""}
+      el.addEventListener("mouseenter", () => { el.style.transform = "scale(1.2)"; });
+      el.addEventListener("mouseleave", () => { el.style.transform = "scale(1)"; });
+
+      const popup = new maplibregl.Popup({ offset: 25, closeButton: false }).setHTML(`
+        <div style="font-size:13px;line-height:1.5;min-width:160px">
+          <strong style="font-size:14px">${pump.name}</strong><br/>
+          <span style="color:${color};font-size:16px">●</span>
+          <span style="font-weight:500">${pump.brand}</span><br/>
+          <span style="color:#888;font-size:12px">${pump.distance} km away</span>
+          ${pump.address ? `<br/><span style="color:#888;font-size:11px">${pump.address}</span>` : ""}
         </div>
       `);
 
@@ -221,7 +226,7 @@ export default function NearestPumpsClient() {
   }, [filteredPumps, location]);
 
   return (
-    <div className="flex-1 w-full flex flex-col gap-6 max-w-5xl mx-auto p-4 sm:p-6">
+    <div className="flex-1 w-full flex flex-col gap-6 max-w-5xl mx-auto p-4 sm:p-6 pt-16 lg:pt-6">
       <div className="space-y-1">
         <h1 className="text-2xl font-bold">Nearest Petrol Pumps</h1>
         <p className="text-muted-foreground text-sm">
@@ -230,14 +235,20 @@ export default function NearestPumpsClient() {
       </div>
 
       {!location && !gpsError && (
-        <div className="rounded-lg border bg-card p-6 text-center text-muted-foreground flex items-center justify-center gap-2">
-          <Loader2 className="w-4 h-4 animate-spin" />
-          Getting your location...
+        <div className="rounded-xl border bg-card p-10 text-center">
+          <div className="w-10 h-10 rounded-xl bg-primary/5 flex items-center justify-center mx-auto mb-3">
+            <Navigation className="w-5 h-5 text-primary animate-pulse" />
+          </div>
+          <p className="text-muted-foreground text-sm flex items-center justify-center gap-2">
+            <Loader2 className="w-4 h-4 animate-spin" />
+            Getting your location...
+          </p>
         </div>
       )}
 
       {gpsError && (
-        <div className="rounded-lg border border-destructive/30 bg-destructive/10 p-4 text-center text-sm text-destructive">
+        <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-4 text-center text-sm text-destructive flex items-center justify-center gap-2">
+          <MapPin className="w-4 h-4 shrink-0" />
           {gpsError}
         </div>
       )}
@@ -245,16 +256,17 @@ export default function NearestPumpsClient() {
       {location && (
         <>
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-sm font-medium text-muted-foreground mr-1">
-              Radius:
+            <Radius className="w-4 h-4 text-muted-foreground" />
+            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider mr-1">
+              Radius
             </span>
             {RADII.map((r) => (
               <button
                 key={r.value}
                 onClick={() => setRadius(r.value)}
-                className={`px-3 py-1 text-sm rounded-full border transition-colors ${
+                className={`px-3 py-1.5 text-xs rounded-lg border transition-all duration-150 font-medium ${
                   radius === r.value
-                    ? "bg-primary text-primary-foreground border-primary"
+                    ? "bg-primary text-primary-foreground border-primary shadow-sm"
                     : "bg-card text-muted-foreground border-border hover:border-primary/50"
                 }`}
               >
@@ -264,14 +276,15 @@ export default function NearestPumpsClient() {
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-sm font-medium text-muted-foreground mr-1">
-              Brand:
+            <SlidersHorizontal className="w-4 h-4 text-muted-foreground" />
+            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider mr-1">
+              Brand
             </span>
             <button
               onClick={() => setSelectedBrand(null)}
-              className={`px-3 py-1 text-sm rounded-full border transition-colors ${
+              className={`px-3 py-1.5 text-xs rounded-lg border transition-all duration-150 font-medium ${
                 !selectedBrand
-                  ? "bg-primary text-primary-foreground border-primary"
+                  ? "bg-primary text-primary-foreground border-primary shadow-sm"
                   : "bg-card text-muted-foreground border-border hover:border-primary/50"
               }`}
             >
@@ -285,9 +298,9 @@ export default function NearestPumpsClient() {
                   onClick={() =>
                     setSelectedBrand(selectedBrand === brand ? null : brand)
                   }
-                  className={`px-3 py-1 text-sm rounded-full border transition-colors flex items-center gap-1.5 ${
+                  className={`px-3 py-1.5 text-xs rounded-lg border transition-all duration-150 font-medium flex items-center gap-1.5 ${
                     selectedBrand === brand
-                      ? "text-white border-transparent"
+                      ? "text-white border-transparent shadow-sm"
                       : "bg-card text-muted-foreground border-border hover:border-primary/50"
                   }`}
                   style={
@@ -297,7 +310,7 @@ export default function NearestPumpsClient() {
                   }
                 >
                   <span
-                    className="w-2 h-2 rounded-full inline-block"
+                    className="w-2.5 h-2.5 rounded-full inline-block shrink-0"
                     style={{ backgroundColor: color }}
                   />
                   {brand} ({brandCounts[brand]})
@@ -307,38 +320,53 @@ export default function NearestPumpsClient() {
           </div>
 
           {loading && (
-            <div className="rounded-lg border bg-card p-6 text-center text-muted-foreground flex items-center justify-center gap-2">
-              <Loader2 className="w-4 h-4 animate-spin" />
-              Searching for nearby petrol pumps...
+            <div className="rounded-xl border bg-card p-8 text-center">
+              <div className="w-10 h-10 rounded-xl bg-primary/5 flex items-center justify-center mx-auto mb-3">
+                <Fuel className="w-5 h-5 text-primary animate-pulse" />
+              </div>
+              <p className="text-muted-foreground text-sm flex items-center justify-center gap-2">
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Searching for nearby petrol pumps...
+              </p>
             </div>
           )}
 
           {error && (
-            <div className="rounded-lg border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
-              {error}
+            <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive flex items-start gap-3">
+              <MapPin className="w-5 h-5 shrink-0 mt-0.5" />
+              <span>{error}</span>
             </div>
           )}
 
           <div
             ref={mapContainer}
-            className="w-full h-72 sm:h-96 rounded-lg border overflow-hidden"
+            className="w-full h-72 sm:h-96 rounded-xl border overflow-hidden"
           />
 
           {!loading && !error && (
-            <div className="space-y-2">
-              <h2 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
-                Results ({filteredPumps.length})
-              </h2>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  Results ({filteredPumps.length})
+                </h2>
+                {location.accuracy && (
+                  <span className="text-xs text-muted-foreground">
+                    GPS accuracy: ~{Math.round(location.accuracy)}m
+                  </span>
+                )}
+              </div>
               {filteredPumps.length === 0 ? (
-                <div className="rounded-lg border bg-card p-8 text-center text-muted-foreground">
-                  <Fuel className="w-8 h-8 mx-auto mb-2 opacity-50" />
-                  <p>No petrol pumps found in this area.</p>
-                  <p className="text-sm mt-1">
+                <div className="rounded-xl border bg-card p-10 text-center">
+                  <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center mx-auto mb-3">
+                    <Fuel className="w-5 h-5 text-muted-foreground/50" />
+                  </div>
+                  <p className="text-muted-foreground">No petrol pumps found in this area.</p>
+                  <p className="text-sm text-muted-foreground mt-1">
                     Try increasing the search radius.
                   </p>
                 </div>
               ) : (
-                <div className="space-y-2">
+                <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
                   {filteredPumps.map((pump) => {
                     const color = BRAND_COLORS[pump.brand] || DEFAULT_COLOR;
                     return (
@@ -352,36 +380,30 @@ export default function NearestPumpsClient() {
                             duration: 500,
                           });
                         }}
-                        className={`w-full text-left rounded-lg border bg-card p-3 hover:border-primary/50 transition-colors ${
-                          selectedPump?.id === pump.id ? "border-primary" : ""
+                        className={`w-full text-left rounded-xl border bg-card p-3.5 hover:border-primary/40 hover:shadow-sm transition-all duration-150 ${
+                          selectedPump?.id === pump.id ? "ring-2 ring-primary border-primary" : ""
                         }`}
                       >
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2 min-w-0">
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-2.5 min-w-0">
                             <span
-                              className="w-3 h-3 rounded-full shrink-0"
+                              className="w-3.5 h-3.5 rounded-full shrink-0 ring-1 ring-black/10"
                               style={{ backgroundColor: color }}
                             />
-                            <span className="font-medium truncate">
+                            <span className="font-medium text-sm truncate">
                               {pump.name}
                             </span>
                           </div>
-                          <span className="text-sm text-muted-foreground shrink-0 ml-2">
+                          <span className="text-xs text-muted-foreground shrink-0 font-mono tabular-nums">
                             {pump.distance} km
                           </span>
                         </div>
-                        <div className="flex items-center gap-2 mt-0.5">
-                          <span className="text-xs text-muted-foreground">
-                            {pump.brand}
-                          </span>
+                        <div className="flex items-center gap-2 mt-1.5 ml-6">
+                          <span className="text-xs text-muted-foreground/70">{pump.brand}</span>
                           {pump.address && (
                             <>
-                              <span className="text-xs text-muted-foreground">
-                                ·
-                              </span>
-                              <span className="text-xs text-muted-foreground truncate">
-                                {pump.address}
-                              </span>
+                              <span className="text-xs text-muted-foreground/30">·</span>
+                              <span className="text-xs text-muted-foreground/70 truncate">{pump.address}</span>
                             </>
                           )}
                         </div>
