@@ -1,3 +1,5 @@
+export const maxDuration = 30;
+
 import { NextRequest, NextResponse } from "next/server";
 
 interface OverpassElement {
@@ -86,21 +88,40 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Coordinates out of range" }, { status: 400 });
     }
 
-    const overpassQuery = `[out:json];(
+    const overpassQuery = `[out:json][timeout:15];(
       node["amenity"="fuel"](around:${radius},${lat},${lon});
       way["amenity"="fuel"](around:${radius},${lat},${lon});
-    );out body 50 center;`;
+    );out center 50;`;
 
-    const response = await fetch("https://overpass-api.de/api/interpreter", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({ data: overpassQuery }),
-      signal: AbortSignal.timeout(15000),
-    });
+    const overpassEndpoints = [
+      "https://overpass-api.de/api/interpreter",
+      "https://overpass.kumi.systems/api/interpreter",
+    ];
 
-    if (!response.ok) {
+    let response: Response | null = null;
+    let upstreamError: string | null = null;
+
+    for (const endpoint of overpassEndpoints) {
+      try {
+        response = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: new URLSearchParams({ data: overpassQuery }),
+          signal: AbortSignal.timeout(15000),
+        });
+        if (response.ok) break;
+        const text = await response.text().catch(() => "");
+        upstreamError = `Overpass ${response.status} from ${endpoint}: ${text.slice(0, 200)}`;
+        response = null;
+      } catch {
+        upstreamError = `Network error contacting ${endpoint}`;
+        response = null;
+      }
+    }
+
+    if (!response) {
       return NextResponse.json(
-        { error: "Failed to fetch pump data from upstream" },
+        { error: upstreamError || "Failed to fetch pump data from upstream" },
         { status: 502 }
       );
     }
