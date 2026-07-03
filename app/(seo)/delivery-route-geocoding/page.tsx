@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BreadcrumbSchema } from "@/components/breadcrumb-schema";
 
 export function generateMetadata(): Metadata {
   return {
-    title: "Bulk Geocode Delivery Routes from CSV — Locator",
+    title: "Bulk Geocode Delivery Routes from CSV",
     description:
       "Upload a CSV of delivery stop addresses and geocode them in bulk for route optimisation. Export coordinates for Google Maps, Mapbox, or any navigation platform.",
     alternates: { canonical: "/delivery-route-geocoding" },
@@ -74,6 +75,13 @@ export default function Page() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Resources", href: "/" },
+          { name: "Delivery Route Geocoding", href: "/delivery-route-geocoding" },
+        ]}
       />
       <div className="mx-auto max-w-3xl space-y-16 px-5 py-12">
         <section className="space-y-4">

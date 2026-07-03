@@ -10,7 +10,7 @@ export default function SeoLayout({
       <header className="w-full border-b border-border">
         <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-5">
           <Link href="/" className="font-semibold">
-            Locator
+            GeoBatch
           </Link>
           <nav className="flex gap-4 text-sm text-muted-foreground">
             <Link href="/convert" className="hover:text-foreground transition-colors">
@@ -27,7 +27,7 @@ export default function SeoLayout({
       </header>
       <main className="flex-1">{children}</main>
       <footer className="w-full border-t border-border py-8 text-center text-xs text-muted-foreground">
-        <p>Locator — Geospatial Developer Tool</p>
+        <p>GeoBatch — Free Geocoding API &amp; Coordinate Conversion Tools</p>
       </footer>
     </div>
   );

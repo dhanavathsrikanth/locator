@@ -10,9 +10,17 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Locator — Geospatial Developer Tool",
-  description: "Convert, batch, and manage geospatial coordinate data",
+  title: {
+    default: "GeoBatch — Geospatial API & Coordinate Conversion Tools",
+    template: "%s | GeoBatch",
+  },
+  description:
+    "Free geospatial API and web tools — batch geocode addresses, convert coordinates between DD/DMS/UTM/MGRS, and find your current location. No signup required for the free tier.",
   alternates: { canonical: "/" },
+  openGraph: {
+    siteName: "GeoBatch",
+    type: "website",
+  },
 };
 
 const geistSans = Geist({
@@ -43,7 +51,39 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider>
+            {children}
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@graph": [
+                    {
+                      "@type": "WebSite",
+                      name: "GeoBatch",
+                      url: defaultUrl,
+                      description:
+                        "Batch geocoding, coordinate conversion, and geospatial API tools.",
+                      potentialAction: {
+                        "@type": "SearchAction",
+                        target: `${defaultUrl}/search?q={search_term_string}`,
+                        "query-input": "required name=search_term_string",
+                      },
+                    },
+                    {
+                      "@type": "Organization",
+                      name: "GeoBatch",
+                      url: defaultUrl,
+                      logo: `${defaultUrl}/opengraph-image.png`,
+                      description:
+                        "Free geospatial API and web tools for batch geocoding, coordinate conversion, and location detection.",
+                    },
+                  ],
+                }),
+              }}
+            />
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

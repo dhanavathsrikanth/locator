@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BreadcrumbSchema } from "@/components/breadcrumb-schema";
 
 export function generateMetadata(): Metadata {
   return {
-    title: "Drone Flight Log & Survey Coordinate Converter (MGRS/UTM Batch) — Locator",
+    title: "Drone Survey Coordinate Converter (MGRS/UTM Batch)",
     description:
       "Convert drone survey coordinates between MGRS, UTM, and Decimal Degrees in batch. Upload flight logs, choose output format, and download clean coordinate data.",
     alternates: { canonical: "/drone-survey-coordinate-converter" },
@@ -74,6 +75,13 @@ export default function Page() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Resources", href: "/" },
+          { name: "Drone Survey Coordinate Converter", href: "/drone-survey-coordinate-converter" },
+        ]}
       />
       <div className="mx-auto max-w-3xl space-y-16 px-5 py-12">
         <section className="space-y-4">

@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BreadcrumbSchema } from "@/components/breadcrumb-schema";
 
 export function generateMetadata(): Metadata {
   return {
-    title: "What Is My Location? Instant IP + GPS Lookup — Locator",
+    title: "What Is My Location? Instant IP + GPS Lookup",
     description:
       "Find your current location instantly using IP geolocation and browser GPS. Get lat/lng coordinates, address, and a shareable map link. No signup required.",
     alternates: { canonical: "/what-is-my-location" },
@@ -74,6 +75,13 @@ export default function Page() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Resources", href: "/" },
+          { name: "What Is My Location?", href: "/what-is-my-location" },
+        ]}
       />
       <div className="mx-auto max-w-3xl space-y-16 px-5 py-12">
         <section className="space-y-4">

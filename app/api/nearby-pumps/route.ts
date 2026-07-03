@@ -89,7 +89,7 @@ export async function POST(request: NextRequest) {
     const overpassQuery = `[out:json];(
       node["amenity"="fuel"](around:${radius},${lat},${lon});
       way["amenity"="fuel"](around:${radius},${lat},${lon});
-    );out center body 50;`;
+    );out body 50 center;`;
 
     const response = await fetch("https://overpass-api.de/api/interpreter", {
       method: "POST",

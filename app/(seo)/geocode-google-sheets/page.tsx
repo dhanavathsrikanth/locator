@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BreadcrumbSchema } from "@/components/breadcrumb-schema";
 
 export function generateMetadata(): Metadata {
   return {
-    title: "Geocode Addresses Directly in Google Sheets — Locator",
+    title: "Geocode Addresses Directly in Google Sheets",
     description:
       "Geocode addresses from Google Sheets in bulk. Export your sheet as CSV, upload to the batch geocoding tool, and import lat/lng coordinates back. Free, no plugin required.",
     alternates: { canonical: "/geocode-google-sheets" },
@@ -74,6 +75,13 @@ export default function Page() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Resources", href: "/" },
+          { name: "Geocode Google Sheets", href: "/geocode-google-sheets" },
+        ]}
       />
       <div className="mx-auto max-w-3xl space-y-16 px-5 py-12">
         <section className="space-y-4">

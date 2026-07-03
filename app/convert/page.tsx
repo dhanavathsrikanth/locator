@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import ConvertClient from "./convert-client";
+import { BreadcrumbSchema } from "@/components/breadcrumb-schema";
 
 export const metadata: Metadata = {
-  title: "Convert Coordinates — Locator",
+  title: "Convert Coordinates",
   description:
-    "Free online coordinate converter. Convert between Decimal Degrees, DMS, DDM, UTM, MGRS, Geohash, and Plus Codes instantly. No login required.",
+    "Free online coordinate converter. Instantly convert between Decimal Degrees, DMS, DDM, UTM, MGRS, Geohash, and Plus Codes. Batch conversion also supported for CSV files. No login required.",
   alternates: { canonical: "/convert" },
 };
 
@@ -23,9 +24,29 @@ function SeoLinks() {
   );
 }
 
+const convertSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "GeoBatch Coordinate Converter",
+  description:
+    "Free online coordinate converter supporting Decimal Degrees, DMS, DDM, UTM, MGRS, Geohash, and Plus Codes.",
+  applicationCategory: "UtilityApplication",
+  operatingSystem: "All",
+};
+
 export default function ConvertPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(convertSchema) }}
+      />
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Convert Coordinates", href: "/convert" },
+        ]}
+      />
       <ConvertClient />
       <SeoLinks />
     </>

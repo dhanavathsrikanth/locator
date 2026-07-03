@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BreadcrumbSchema } from "@/components/breadcrumb-schema";
 
 export function generateMetadata(): Metadata {
   return {
-    title: "Convert MLS Listing Addresses to Coordinates in Bulk — Locator",
+    title: "Convert MLS Listing Addresses to Coordinates in Bulk",
     description:
       "Geocode thousands of MLS property addresses to lat/lng for real estate mapping. Upload a CSV of listings, auto-map MLS fields, and download coordinates in DD, DMS, or UTM.",
     alternates: { canonical: "/real-estate-bulk-geocoding" },
@@ -74,6 +75,13 @@ export default function Page() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Resources", href: "/" },
+          { name: "MLS Bulk Geocoding", href: "/real-estate-bulk-geocoding" },
+        ]}
       />
       <div className="mx-auto max-w-3xl space-y-16 px-5 py-12">
         <section className="space-y-4">

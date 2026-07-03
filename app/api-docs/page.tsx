@@ -1,19 +1,42 @@
 import type { Metadata } from "next";
+import { BreadcrumbSchema } from "@/components/breadcrumb-schema";
 
 export const metadata: Metadata = {
-  title: "API Docs — Locator",
+  title: "API Docs",
+  description:
+    "Complete REST API reference for GeoBatch geospatial services. Geocode addresses, convert coordinates between DD/DMS/UTM/MGRS, and batch-process CSV files. Free tier available, no credit card required.",
   alternates: { canonical: "/api-docs" },
 };
 
 import Link from "next/link";
 
+const apiSchema = {
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  name: "GeoBatch API Documentation",
+  description:
+    "REST API reference for GeoBatch geospatial services including batch geocoding and coordinate conversion.",
+  applicationCategory: "DeveloperAPI",
+};
+
 export default function ApiDocsPage() {
   return (
-    <div className="flex-1 w-full flex flex-col gap-8 max-w-5xl mx-auto p-6">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(apiSchema) }}
+      />
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", href: "/" },
+          { name: "API Docs", href: "/api-docs" },
+        ]}
+      />
+      <div className="flex-1 w-full flex flex-col gap-8 max-w-5xl mx-auto p-6">
       <div className="space-y-2">
         <h1 className="text-2xl font-bold">API Documentation</h1>
         <p className="text-muted-foreground">
-          REST API reference for the Locator geospatial service.
+          REST API reference for the GeoBatch geospatial service.
         </p>
       </div>
       <div className="rounded-lg border border-border bg-card p-8 text-center text-muted-foreground">
@@ -30,5 +53,6 @@ export default function ApiDocsPage() {
         </p>
       </div>
     </div>
+    </>
   );
 }

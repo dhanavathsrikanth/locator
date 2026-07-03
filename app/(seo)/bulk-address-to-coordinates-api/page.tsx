@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BreadcrumbSchema } from "@/components/breadcrumb-schema";
 
 export function generateMetadata(): Metadata {
   return {
-    title: "Bulk Address to Coordinates API — Locator",
+    title: "Bulk Address to Coordinates API",
     description:
       "Convert hundreds of street addresses to lat/lng in a single API call. Batch geocoding endpoint returns DD, DMS, UTM, or MGRS. Free to start, no credit card.",
     alternates: { canonical: "/bulk-address-to-coordinates-api" },
@@ -74,6 +75,13 @@ export default function Page() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Resources", href: "/" },
+          { name: "Bulk Address to Coordinates API", href: "/bulk-address-to-coordinates-api" },
+        ]}
       />
       <div className="mx-auto max-w-3xl space-y-16 px-5 py-12">
         <section className="space-y-4">
